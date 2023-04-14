@@ -133,31 +133,32 @@ main()
 
 
 class Grafos():
+
   def __init__(self):
-    self.classes=["completo","bipartido","caminho","ciclo","roda","estrela","n_cubo"]
+    self.classes=["completo","bipartido","estrela"]
     self.opcao=self.selecionaClasseGrafo()-1
     self.grafo=self.criaClasse()
     self.armazenaGrafo()
+
   def selecionaClasseGrafo(self):
     opcao=input('''selecione uma classe de grafo para ser criada
     1-Grafo Completo
     2-Grafo Bipartido
-    3-Grafo Caminho
-    4-Grafo Ciclo
-    5-Grafo Roda
-    6-Grafo Estrela
-    7-Grafo n-Cubo
+    3-Grafo Estrela
     opcao:''')
     return int(opcao)
+  
   def criaClasse(self):
     classe="self."+self.classes[self.opcao]+"()"
     return eval(classe)
+  
   def armazenaGrafo(self):
     os.chdir("Classe de grafos__/")
     grafo=f"{self.classes[self.opcao]}$n{len(self.grafo)}$.txt"
     incluiGrafo(self.grafo,grafo)
     imprimeGrafo(self.grafo)
     os.chdir("../")
+
   def completo(self):
     tamanho=int(input("digite o tamanho do grafo:"))
     grafo=[]
@@ -172,6 +173,7 @@ class Grafos():
         if len(grafo[i])<tamanho:
           grafo[i].insert(j,grafo[j][i])
     return grafo
+  
   def bipartido(self):
     grafo=[]
     x=int(input("informe o valor da primeira particao:"))
@@ -192,6 +194,7 @@ class Grafos():
         if len(grafo[i])<tamanho:
           grafo[i].insert(j,grafo[j][i])
     return grafo
+  
   def caminho(self):
     tamanho=int(input("digite o tamanho do grafo:"))
     grafo=[]
@@ -209,6 +212,7 @@ class Grafos():
         if len(grafo[i])<tamanho:
           grafo[i].insert(j,grafo[j][i])
     return grafo
+  
   def ciclo(self):
     tamanho=int(input("digite o tamanho do grafo:"))
     grafo=[]
@@ -226,6 +230,7 @@ class Grafos():
         if len(grafo[i])<tamanho:
           grafo[i].insert(j,grafo[j][i])
     return grafo
+  
   def roda(self):
     tamanho=int(input("digite o tamanho do grafo:"))+1
     grafo=[]
@@ -243,6 +248,7 @@ class Grafos():
         if len(grafo[i])<tamanho:
           grafo[i].insert(j,grafo[j][i])
     return grafo
+  
   def estrela(self):
     tamanho=int(input("digite o tamanho do grafo:"))+1
     grafo=[]
@@ -260,6 +266,7 @@ class Grafos():
         if len(grafo[i])<tamanho:
           grafo[i].insert(j,grafo[j][i])
     return grafo
+  
   def n_cubo(self):
     tamanho=2**int(input("digite o tamanho do grafo:"))
     grafo=[]
