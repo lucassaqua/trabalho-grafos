@@ -52,6 +52,7 @@ def leGrafo():
           finally:
               armazenaGrafo(grafosArmazenados)
               imprimeMatrizAdj(grafo)
+              main()
 
 
 def abreArquivo():
@@ -107,7 +108,137 @@ def carregaGrafo():
 
     except:
         print("\nAinda nao existe nenhum grafo armazenado.\nEscolha b para ler um.\n")
+
+
+
+def leGrafoEspecial():
+
+  tipoDeGrafo = int(input("\nQue tipo de grafo especial voce quer ler?\nSelecipne uma das opcoes abaixo.\n\n1 - completo\n2 - Bipartido Completo\n3 - Estrela\n")) 
+  
+  if tipoDeGrafo == 1:
+    completo()
+
+  elif tipoDeGrafo == 2:
+    bipartidoCompleto()
+
+  elif tipoDeGrafo == 3:
+    estrela()
+
+  else:
+    print("\n'" + tipoDeGrafo + "' nao e uma opcao valida. Tente de novo.\n")
+    leGrafoEspecial()
     
+
+def completo():            
+
+  tamanho = int(input("digite o tamanho do grafo (n):"))
+  grafo = []
+
+  while tamanho < 2:
+    tamanho =int (input("tamanho do grafo entre 2 e n:"))
+
+  for i in range(tamanho):
+    grafo.append([0])
+    for j in range(tamanho - i -1):
+      grafo[i].append('1') 
+
+  for i in range(tamanho):
+    for j in range (tamanho):
+      if len(grafo[i]) < tamanho:
+        grafo[i].insert(j, grafo[j][i])
+
+  nomeGrafo = "completo_" + str(tamanho)
+  print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
+
+  try:
+      grafosArmazenados = abreArquivo()
+      grafosArmazenados[nomeGrafo] = grafo
+
+  except:
+      grafosArmazenados = {nomeGrafo:grafo}
+
+  finally:
+      armazenaGrafo(grafosArmazenados)
+      imprimeMatrizAdj(grafo)
+      main()
+
+def bipartidoCompleto():
+
+  grafo = []
+  n1 = int(input("informe o valor da primeira particao (n1): "))
+  n2 = int(input("informe o valor da segunda particao (n2): "))
+  tamanho = n1 + n2
+
+  while tamanho < 2:
+    n1 = int(input("tamanho do grafo entre 2 e n: "))
+    n2 = int(input("tamanho do grafo entre 2 e n: "))
+
+  for i in range(tamanho):
+    grafo.append([0])
+    for j in range(tamanho - i - 1):
+      if (i < n1 and j >= n1 - i - 1):
+        grafo[i].append('1')
+      else:
+        grafo[i].append(0)
+
+  for i in range(tamanho):
+    for j in range (tamanho):
+      if len(grafo[i]) < tamanho:
+        grafo[i].insert(j, str(grafo[j][i]))
+
+  nomeGrafo = "bipartido_completo_" + str(n1) + str(n2)
+  print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
+
+  try:
+      grafosArmazenados = abreArquivo()
+      grafosArmazenados[nomeGrafo] = grafo
+
+  except:
+      grafosArmazenados = {nomeGrafo:grafo}
+
+  finally:
+      armazenaGrafo(grafosArmazenados)
+      imprimeMatrizAdj(grafo)
+      main()
+    
+
+def estrela():
+
+    tamanho = int(input("digite o tamanho do grafo (n): "))
+    grafo = []
+
+    while tamanho < 4:
+      tamanho = int(input("tamanho do grafo entre 3 e n:")) 
+
+    for i in range(tamanho):
+      grafo.append([0])
+      for j in range(tamanho - i - 1):
+        if j==(tamanho - i - 2):
+          grafo[i].append('1')
+        else:
+          grafo[i].append(0)
+
+    for i in range(tamanho):
+      for j in range (tamanho):
+        if len(grafo[i]) < tamanho:
+          grafo[i].insert(j, str(grafo[j][i]))
+
+    nomeGrafo = "estrela_" + str(tamanho)
+    print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
+
+    try:
+        grafosArmazenados = abreArquivo()
+        grafosArmazenados[nomeGrafo] = grafo
+
+    except:
+        grafosArmazenados = {nomeGrafo:grafo}
+
+    finally:
+        armazenaGrafo(grafosArmazenados)
+        imprimeMatrizAdj(grafo)
+        main()
+
+
 def main():
 
     escolha = input("Escolha uma das opcoes:\na - Ler um grafo\nb - Carregar um grafo\nc - Produzir um grafo de uma classe especial\nd - Sair\n")
@@ -119,7 +250,7 @@ def main():
         carregaGrafo()
 
     elif escolha == 'c':
-        Grafos()
+        leGrafoEspecial()
 
     elif escolha == 'd':
         sys.exit()             
@@ -130,166 +261,3 @@ def main():
 
 main()
 
-
-
-class Grafos():
-
-  def __init__(self):
-    self.classes=["completo","bipartido","estrela"]
-    self.opcao=self.selecionaClasseGrafo()-1
-    self.grafo=self.criaClasse()
-    self.armazenaGrafo()
-
-  def selecionaClasseGrafo(self):
-    opcao=input('''selecione uma classe de grafo para ser criada
-    1-Grafo Completo
-    2-Grafo Bipartido
-    3-Grafo Estrela
-    opcao:''')
-    return int(opcao)
-  
-  def criaClasse(self):
-    classe="self."+self.classes[self.opcao]+"()"
-    return eval(classe)
-  
-  def armazenaGrafo(self):
-    os.chdir("Classe de grafos__/")
-    grafo=f"{self.classes[self.opcao]}$n{len(self.grafo)}$.txt"
-    incluiGrafo(self.grafo,grafo)
-    imprimeGrafo(self.grafo)
-    os.chdir("../")
-
-  def completo(self):
-    tamanho=int(input("digite o tamanho do grafo:"))
-    grafo=[]
-    while tamanho < 2:
-      tamanho=int(input("tamanho do grafo entre 2 e n:"))
-    for i in range(tamanho):
-      grafo.append([0])
-      for j in range(tamanho-i-1):
-        grafo[i].append(1)
-    for i in range(tamanho):
-      for j in range (tamanho):
-        if len(grafo[i])<tamanho:
-          grafo[i].insert(j,grafo[j][i])
-    return grafo
-  
-  def bipartido(self):
-    grafo=[]
-    x=int(input("informe o valor da primeira particao:"))
-    y=int(input("informe o valor da segunda particao:"))
-    tamanho=x+y
-    while tamanho < 2:
-      x=int(input("tamanho do grafo entre 2 e n:"))
-      y=int(input("tamanho do grafo entre 2 e n:"))
-    for i in range(tamanho):
-      grafo.append([0])
-      for j in range(tamanho-i-1):
-        if (i<x and j>=x-i-1):
-          grafo[i].append(1)
-        else:
-          grafo[i].append(0)
-    for i in range(tamanho):
-      for j in range (tamanho):
-        if len(grafo[i])<tamanho:
-          grafo[i].insert(j,grafo[j][i])
-    return grafo
-  
-  def caminho(self):
-    tamanho=int(input("digite o tamanho do grafo:"))
-    grafo=[]
-    while tamanho < 2:
-      tamanho=int(input("tamanho do grafo entre 2 e n:"))
-    for i in range(tamanho):
-      grafo.append([0])
-      for j in range(tamanho-i-1):
-        if (j==0):
-          grafo[i].append(1)
-        else:
-          grafo[i].append(0)
-    for i in range(tamanho):
-      for j in range (tamanho):
-        if len(grafo[i])<tamanho:
-          grafo[i].insert(j,grafo[j][i])
-    return grafo
-  
-  def ciclo(self):
-    tamanho=int(input("digite o tamanho do grafo:"))
-    grafo=[]
-    while tamanho < 4:
-      tamanho=int(input("tamanho do grafo entre 3 e n:"))
-    for i in range(tamanho):
-      grafo.append([0])
-      for j in range(tamanho-i-1):
-        if (j==0 or (i==0 and j==tamanho-2)):
-          grafo[i].append(1)
-      else:
-        grafo[i].append(0)
-    for i in range(tamanho):
-      for j in range (tamanho):
-        if len(grafo[i])<tamanho:
-          grafo[i].insert(j,grafo[j][i])
-    return grafo
-  
-  def roda(self):
-    tamanho=int(input("digite o tamanho do grafo:"))+1
-    grafo=[]
-    while tamanho < 4:
-      tamanho=int(input("tamanho do grafo entre 3 e n:"))+1
-    for i in range(tamanho):
-      grafo.append([0])
-      for j in range(tamanho-i-1):
-        if (j==0 or j==tamanho-i-2):
-          grafo[i].append(1)
-        else:
-          grafo[i].append(0)
-    for i in range(tamanho):
-      for j in range (tamanho):
-        if len(grafo[i])<tamanho:
-          grafo[i].insert(j,grafo[j][i])
-    return grafo
-  
-  def estrela(self):
-    tamanho=int(input("digite o tamanho do grafo:"))+1
-    grafo=[]
-    while tamanho < 4:
-      tamanho=int(input("tamanho do grafo entre 3 e n:"))+1
-    for i in range(tamanho):
-      grafo.append([0])
-      for j in range(tamanho-i-1):
-        if j==(tamanho-i-2):
-          grafo[i].append(1)
-        else:
-          grafo[i].append(0)
-    for i in range(tamanho):
-      for j in range (tamanho):
-        if len(grafo[i])<tamanho:
-          grafo[i].insert(j,grafo[j][i])
-    return grafo
-  
-  def n_cubo(self):
-    tamanho=2**int(input("digite o tamanho do grafo:"))
-    grafo=[]
-    while tamanho < 0:
-      tamanho=2**int(input("tamanho do grafo entre 0 e n:"))
-    for i in range(tamanho):
-      grafo.append([0])
-      for j in range(tamanho-i-1):
-        x=str(abs(int(bin(i)[2:])-int(bin((j+i+1))[2:])))
-        if (x.count("1") ==1 and set(x).issubset({"1","0"})):
-          grafo[i].append(1)
-        else:
-          grafo[i].append(0)
-    for i in range(tamanho):
-      for j in range (tamanho):
-        if len(grafo[i])<tamanho:
-          grafo[i].insert(j,grafo[j][i])
-    for i in range(len(grafo)):
-      print(" "+str(bin(i)[2:]),end="")
-    print("\n")
-    for linha in grafo:
-      print(str(bin(grafo.index(linha))[2:])+" ",end="")
-      for item in linha:
-        print(str(item)+" ",end=" ")
-      print("\n")
-    return grafo
