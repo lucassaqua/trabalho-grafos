@@ -131,10 +131,10 @@ def leGrafoEspecial():
 
 def completo():            
 
-  tamanho = int(input("digite o tamanho do grafo (n):"))
+  tamanho = int(input("digite o tamanho do grafo (n): "))
   grafo = []
 
-  while tamanho < 2:
+  while tamanho < 1:
     tamanho =int (input("tamanho do grafo entre 2 e n:"))
 
   for i in range(tamanho):
@@ -169,9 +169,9 @@ def bipartidoCompleto():
   n2 = int(input("informe o valor da segunda particao (n2): "))
   tamanho = n1 + n2
 
-  while tamanho < 2:
-    n1 = int(input("tamanho do grafo entre 2 e n: "))
-    n2 = int(input("tamanho do grafo entre 2 e n: "))
+  while tamanho < 1:
+    n1 = int(input("informe o valor da primeira particao (n1 > 0): "))
+    n2 = int(input("informe o valor da segunda particao (n2 > 0): "))
 
   for i in range(tamanho):
     grafo.append([0])
@@ -204,11 +204,11 @@ def bipartidoCompleto():
 
 def estrela():
 
-    tamanho = int(input("digite o tamanho do grafo (n > 3): "))
+    tamanho = int(input("digite o tamanho do grafo (n > 2): "))
     grafo = []
 
-    while tamanho < 4:
-      tamanho = int(input("tamanho do grafo entre 4 e n:")) 
+    while tamanho < 3:
+      tamanho = int(input("tamanho do grafo entre 3 e n:")) 
 
     for i in range(tamanho):
       grafo.append([0])
