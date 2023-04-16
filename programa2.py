@@ -204,11 +204,11 @@ def bipartidoCompleto():
 
 def estrela():
 
-    tamanho = int(input("digite o tamanho do grafo (n): "))
+    tamanho = int(input("digite o tamanho do grafo (n > 3): "))
     grafo = []
 
     while tamanho < 4:
-      tamanho = int(input("tamanho do grafo entre 3 e n:")) 
+      tamanho = int(input("tamanho do grafo entre 4 e n:")) 
 
     for i in range(tamanho):
       grafo.append([0])
