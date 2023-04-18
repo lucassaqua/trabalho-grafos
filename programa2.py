@@ -113,7 +113,7 @@ def carregaGrafo():
 
 def leGrafoEspecial():
 
-  tipoDeGrafo = int(input("\nQue tipo de grafo especial voce quer ler?\nSelecipne uma das opcoes abaixo.\n\n1 - completo\n2 - Bipartido Completo\n3 - Estrela\n")) 
+  tipoDeGrafo = int(input("\nQue tipo de grafo especial voce quer ler?\nSelecipne uma das opcoes abaixo.\n\n1 - completo\n2 - Bipartido Completo\n3 - Estrela\n4 - Caminho\n5 - Ciclo\n6 - Roda\n7 - Cubo\n")) 
   
   if tipoDeGrafo == 1:
     completo()
@@ -123,6 +123,18 @@ def leGrafoEspecial():
 
   elif tipoDeGrafo == 3:
     estrela()
+
+  elif tipoDeGrafo == 4:
+    caminho()
+
+  elif tipoDeGrafo == 5:
+    ciclo()####################################
+
+  elif tipoDeGrafo == 6:
+    roda()###################################
+  
+  elif tipoDeGrafo == 7:
+    estrela()###################################
 
   else:
     print("\n'" + tipoDeGrafo + "' nao e uma opcao valida. Tente de novo.\n")
@@ -145,7 +157,7 @@ def completo():
   for i in range(tamanho):
     for j in range (tamanho):
       if len(grafo[i]) < tamanho:
-        grafo[i].insert(j, grafo[j][i])
+        grafo[i].insert(j, str(grafo[j][i]))
 
   nomeGrafo = "completo_" + str(tamanho)
   print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
@@ -238,6 +250,114 @@ def estrela():
         imprimeMatrizAdj(grafo)
         main()
 
+def caminho(): ########## testar se ele ta dando o resultado certo pra n = 1
+    
+    tamanho = int(input("digite o tamanho do grafo (n >= 1): "))
+    grafo = []
+
+    while tamanho < 0: 
+      tamanho = int(input("tamanho do grafo entre 2 e n:"))
+
+    for i in range(tamanho):
+      grafo.append([0])
+      for j in range(tamanho - i - 1):
+        if (j == 0):
+          grafo[i].append('1')
+        else:
+          grafo[i].append(0)
+
+    for i in range(tamanho):
+      for j in range (tamanho):
+        if len(grafo[i]) < tamanho:
+          grafo[i].insert(j, str(grafo[j][i]))
+    
+    nomeGrafo = "caminho_" + str(tamanho)
+    print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
+
+    try:
+        grafosArmazenados = abreArquivo()
+        grafosArmazenados[nomeGrafo] = grafo
+
+    except:
+        grafosArmazenados = {nomeGrafo:grafo}
+
+    finally:
+        armazenaGrafo(grafosArmazenados)
+        imprimeMatrizAdj(grafo)
+        main()
+
+def ciclo():
+    
+    tamanho = int(input("digite o tamanho do grafo(n > 2): "))
+
+    while tamanho < 2:
+      tamanho = int(input("tamanho do grafo entre 3 e n: "))
+
+    grafo =  grafo = [[0] * tamanho for _ in range(tamanho)]  
+  
+    for i in range(0, tamanho): 
+            for j in range (1, tamanho):
+                if(j == (i + 1)):
+                  grafo[i][j] = '1'
+                  grafo[j][i] = '1'
+                    
+    #primeira linha
+    grafo[0][tamanho - 1] = '1'
+    #ultima linha
+    grafo[tamanho - 1][0] = '1'
+
+    nomeGrafo = "ciclo_" + str(tamanho)
+    print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
+
+    try:
+        grafosArmazenados = abreArquivo()
+        grafosArmazenados[nomeGrafo] = grafo
+
+    except:
+        grafosArmazenados = {nomeGrafo:grafo}
+
+    finally:
+        armazenaGrafo(grafosArmazenados)
+        imprimeMatrizAdj(grafo)
+        main()
+
+def roda(): # a ordem do vertice do meio eh n-1. A dos demais eh 3
+    
+    tamanho = int(input("digite o tamanho do grafo(n > 3):")) ##################   tamanho = int(input("digite o tamanho do grafo(n > 3):")) + 1 
+
+    while tamanho < 3:
+      tamanho = int(input("tamanho do grafo entre 3 e n:")) 
+
+    grafo =  grafo = [[0] * tamanho for _ in range(tamanho)]
+
+    for i in range(tamanho): 
+        for j in range (tamanho):
+            if(j == (i + 1)):
+              grafo[i][j] = '1'
+              grafo[j][i] = '1'
+            if ( j == (tamanho - 1) or i == (tamanho - 1)):
+                grafo[i][j] = '1'
+            if( j == (tamanho - 1) and i == (tamanho - 1)):
+                grafo[i][j] = 0
+                
+    #elementos pendentes
+    grafo[0][tamanho - 2] = '1'
+    grafo[tamanho - 2][0] = '1'
+
+    nomeGrafo = "roda_" + str(tamanho)
+    print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
+
+    try:
+        grafosArmazenados = abreArquivo()
+        grafosArmazenados[nomeGrafo] = grafo
+
+    except:
+        grafosArmazenados = {nomeGrafo:grafo}
+
+    finally:
+        armazenaGrafo(grafosArmazenados)
+        imprimeMatrizAdj(grafo)
+        main()
 
 def main():
 
@@ -258,6 +378,8 @@ def main():
     else:
         print("\n'" + escolha + "' nao e uma opcao valida. Tente de novo.\n")
         main()
+
+  ########## testar se sys.exit()   aqui tira a mensagem de opcao invalida depois de apertar d
 
 main()
 
