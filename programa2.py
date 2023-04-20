@@ -147,7 +147,7 @@ def completo():
   grafo = []
 
   while tamanho < 1:
-    tamanho =int (input("tamanho do grafo entre 2 e n:"))
+    tamanho = int (input("digite o tamanho do grafo (n > 0):"))
 
   for i in range(tamanho):
     grafo.append([0])
@@ -181,9 +181,10 @@ def bipartidoCompleto():
   n2 = int(input("informe o valor da segunda particao (n2): "))
   tamanho = n1 + n2
 
-  while tamanho < 1:
+  while tamanho < 2:
     n1 = int(input("informe o valor da primeira particao (n1 > 0): "))
     n2 = int(input("informe o valor da segunda particao (n2 > 0): "))
+    tamanho = n1 + n2
 
   for i in range(tamanho):
     grafo.append([0])
@@ -216,11 +217,11 @@ def bipartidoCompleto():
 
 def estrela():
 
-    tamanho = int(input("digite o tamanho do grafo (n > 2): "))
+    tamanho = int(input("digite o tamanho do grafo (n): "))
     grafo = []
 
-    while tamanho < 3:
-      tamanho = int(input("tamanho do grafo entre 3 e n:")) 
+    while tamanho < 1:
+      tamanho = int(input("tamanho do grafo entre 2 e n:")) 
 
     for i in range(tamanho):
       grafo.append([0])
@@ -250,13 +251,13 @@ def estrela():
         imprimeMatrizAdj(grafo)
         main()
 
-def caminho(): ########## testar se ele ta dando o resultado certo pra n = 1
+def caminho():
     
     tamanho = int(input("digite o tamanho do grafo (n >= 1): "))
     grafo = []
 
-    while tamanho < 0: 
-      tamanho = int(input("tamanho do grafo entre 2 e n:"))
+    while tamanho < 1: 
+      tamanho = int(input("tamanho do grafo entre 1 e n:"))
 
     for i in range(tamanho):
       grafo.append([0])
@@ -290,7 +291,7 @@ def ciclo():
     
     tamanho = int(input("digite o tamanho do grafo(n > 2): "))
 
-    while tamanho < 2:
+    while tamanho < 3:
       tamanho = int(input("tamanho do grafo entre 3 e n: "))
 
     grafo =  grafo = [[0] * tamanho for _ in range(tamanho)]  
@@ -321,12 +322,12 @@ def ciclo():
         imprimeMatrizAdj(grafo)
         main()
 
-def roda(): # a ordem do vertice do meio eh n-1. A dos demais eh 3
+def roda():
     
-    tamanho = int(input("digite o tamanho do grafo(n > 3):")) ##################   tamanho = int(input("digite o tamanho do grafo(n > 3):")) + 1 
+    tamanho = int(input("digite o tamanho do grafo(n > 3): ")) 
 
     while tamanho < 3:
-      tamanho = int(input("tamanho do grafo entre 4 e n:")) 
+      tamanho = int(input("tamanho do grafo entre 3 e n: ")) 
 
     grafo =  grafo = [[0] * tamanho for _ in range(tamanho)]
 
@@ -361,38 +362,27 @@ def roda(): # a ordem do vertice do meio eh n-1. A dos demais eh 3
 
 def n_cubo():
 
-  n = int(input("digite o tamanho do grafo:"))
+  n = int(input("digite o tamanho do grafo (n) que sera o numero de dimensoes: "))
 
   tamanho = 2 ** n
   grafo = []
 
   while tamanho < 0:
-    tamanho = 2 ** int(input("tamanho do grafo entre 0 e n:"))
+    tamanho = 2 ** int(input("tamanho do grafo entre 0 e n: "))
 
   for i in range(tamanho):
     grafo.append([0])
     for j in range(tamanho - i - 1):
       x = str(abs(int(bin(i)[2:]) - int(bin((j + i + 1))[2:])))
       if (x.count("1") == 1 and set(x).issubset({"1", "0"})):
-        grafo[i].append(1) ###################   grafo[i].append(1) |||||||||||||||||| ler '1' para acertar o m
+        grafo[i].append('1')
       else:
         grafo[i].append(0)
 
   for i in range(tamanho):
     for j in range (tamanho):
       if len(grafo[i]) < tamanho:
-        grafo[i].insert(j, grafo[j][i])
-
-  for i in range(len(grafo)):
-    print(" " + str(bin(i)[2:]), end="")
-  print("\n")
-
-  # for linha in grafo:
-  #   print(str(bin(grafo.index(linha))[2:]) + " ", end="")
-  #   for item in linha:
-  #     print(str(item) + " ", end=" ")
-  #   print("\n")
-  
+        grafo[i].insert(j, str(grafo[j][i]))
 
   nomeGrafo = "cubo_" + str(n)
   print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
@@ -429,8 +419,4 @@ def main():
         print("\n'" + escolha + "' nao e uma opcao valida. Tente de novo.\n")
         main()
 
-  ########## testar se sys.exit()   aqui tira a mensagem de opcao invalida depois de apertar d
-
 main()
-
-############### fazer o desenho dos grafos que estou criando pra facilitar a apresentação, caso ele peça
