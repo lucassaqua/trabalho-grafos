@@ -128,13 +128,13 @@ def leGrafoEspecial():
     caminho()
 
   elif tipoDeGrafo == 5:
-    ciclo()####################################
+    ciclo()
 
   elif tipoDeGrafo == 6:
-    roda()###################################
+    roda()
   
   elif tipoDeGrafo == 7:
-    estrela()###################################
+    n_cubo()
 
   else:
     print("\n'" + tipoDeGrafo + "' nao e uma opcao valida. Tente de novo.\n")
@@ -326,7 +326,7 @@ def roda(): # a ordem do vertice do meio eh n-1. A dos demais eh 3
     tamanho = int(input("digite o tamanho do grafo(n > 3):")) ##################   tamanho = int(input("digite o tamanho do grafo(n > 3):")) + 1 
 
     while tamanho < 3:
-      tamanho = int(input("tamanho do grafo entre 3 e n:")) 
+      tamanho = int(input("tamanho do grafo entre 4 e n:")) 
 
     grafo =  grafo = [[0] * tamanho for _ in range(tamanho)]
 
@@ -359,6 +359,56 @@ def roda(): # a ordem do vertice do meio eh n-1. A dos demais eh 3
         imprimeMatrizAdj(grafo)
         main()
 
+def n_cubo():
+
+  n = int(input("digite o tamanho do grafo:"))
+
+  tamanho = 2 ** n
+  grafo = []
+
+  while tamanho < 0:
+    tamanho = 2 ** int(input("tamanho do grafo entre 0 e n:"))
+
+  for i in range(tamanho):
+    grafo.append([0])
+    for j in range(tamanho - i - 1):
+      x = str(abs(int(bin(i)[2:]) - int(bin((j + i + 1))[2:])))
+      if (x.count("1") == 1 and set(x).issubset({"1", "0"})):
+        grafo[i].append(1) ###################   grafo[i].append(1) |||||||||||||||||| ler '1' para acertar o m
+      else:
+        grafo[i].append(0)
+
+  for i in range(tamanho):
+    for j in range (tamanho):
+      if len(grafo[i]) < tamanho:
+        grafo[i].insert(j, grafo[j][i])
+
+  for i in range(len(grafo)):
+    print(" " + str(bin(i)[2:]), end="")
+  print("\n")
+
+  # for linha in grafo:
+  #   print(str(bin(grafo.index(linha))[2:]) + " ", end="")
+  #   for item in linha:
+  #     print(str(item) + " ", end=" ")
+  #   print("\n")
+  
+
+  nomeGrafo = "cubo_" + str(n)
+  print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
+
+  try:
+      grafosArmazenados = abreArquivo()
+      grafosArmazenados[nomeGrafo] = grafo
+
+  except:
+      grafosArmazenados = {nomeGrafo:grafo}
+
+  finally:
+      armazenaGrafo(grafosArmazenados)
+      imprimeMatrizAdj(grafo)
+      main()
+
 def main():
 
     escolha = input("Escolha uma das opcoes:\na - Ler um grafo\nb - Carregar um grafo\nc - Produzir um grafo de uma classe especial\nd - Sair\n")
@@ -383,3 +433,4 @@ def main():
 
 main()
 
+############### fazer o desenho dos grafos que estou criando pra facilitar a apresentação, caso ele peça
