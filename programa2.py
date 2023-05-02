@@ -215,13 +215,13 @@ def bipartidoCompleto():
       main()
     
 
-def estrela():
+def estrela(): ###################### aguardando resposta do monitor 
 
-    tamanho = int(input("digite o tamanho do grafo (n): "))
+    tamanho = int(input("digite o tamanho do grafo (n > 0): ")) + 1
     grafo = []
 
-    while tamanho < 1:
-      tamanho = int(input("tamanho do grafo entre 2 e n:")) 
+    while tamanho < 2:    ########## aguardando resposta do monitor 
+      tamanho = int(input("tamanho do grafo entre 1 e n:")) + 1
 
     for i in range(tamanho):
       grafo.append([0])
@@ -236,7 +236,7 @@ def estrela():
         if len(grafo[i]) < tamanho:
           grafo[i].insert(j, str(grafo[j][i]))
 
-    nomeGrafo = "estrela_" + str(tamanho)
+    nomeGrafo = "estrela_" + str(tamanho - 1) ############# aguardando resposta do monitor 
     print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
 
     try:
@@ -322,12 +322,12 @@ def ciclo():
         imprimeMatrizAdj(grafo)
         main()
 
-def roda():
+def roda():  ###################### aguardando resposta do monitor 
     
-    tamanho = int(input("digite o tamanho do grafo(n > 3): ")) 
+    tamanho = int(input("digite o tamanho do grafo(n >= 3): ")) + 1
 
-    while tamanho < 3:
-      tamanho = int(input("tamanho do grafo entre 3 e n: ")) 
+    while tamanho < 4:
+      tamanho = int(input("tamanho do grafo entre 3 e n: ")) + 1
 
     grafo =  grafo = [[0] * tamanho for _ in range(tamanho)]
 
@@ -345,7 +345,7 @@ def roda():
     grafo[0][tamanho - 2] = '1'
     grafo[tamanho - 2][0] = '1'
 
-    nomeGrafo = "roda_" + str(tamanho)
+    nomeGrafo = "roda_" + str(tamanho - 1) ########## aguardando resposta do monitor 
     print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
 
     try:
@@ -420,3 +420,13 @@ def main():
         main()
 
 main()
+
+#######################################################################################
+#######################################################################################
+
+# comparar o meu projeto do periodo passado com o do julio e ver qual dos dois está mais parecido 
+# com o algoritmo de busca em largura do luerbio ( o algoritmo está no material dele e em foto no celular ).
+# Condferir também se a saída está correta.
+
+#######################################################################################
+#######################################################################################
