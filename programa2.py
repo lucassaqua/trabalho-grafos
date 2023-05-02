@@ -428,5 +428,7 @@ main()
 # com o algoritmo de busca em largura do luerbio ( o algoritmo está no material dele e em foto no celular ).
 # Condferir também se a saída está correta.
 
+# no video de conectividade 2023-04-21 17-54-11.mp4  em 8min talvez tem um negocio que ele fala sobre o trab
+
 #######################################################################################
 #######################################################################################
