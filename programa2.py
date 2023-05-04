@@ -215,12 +215,12 @@ def bipartidoCompleto():
       main()
     
 
-def estrela(): ###################### aguardando resposta do monitor 
+def estrela():
 
     tamanho = int(input("digite o tamanho do grafo (n > 0): ")) + 1
     grafo = []
 
-    while tamanho < 2:    ########## aguardando resposta do monitor 
+    while tamanho < 2:
       tamanho = int(input("tamanho do grafo entre 1 e n:")) + 1
 
     for i in range(tamanho):
@@ -236,7 +236,7 @@ def estrela(): ###################### aguardando resposta do monitor
         if len(grafo[i]) < tamanho:
           grafo[i].insert(j, str(grafo[j][i]))
 
-    nomeGrafo = "estrela_" + str(tamanho - 1) ############# aguardando resposta do monitor 
+    nomeGrafo = "estrela_" + str(tamanho - 1)
     print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
 
     try:
@@ -322,7 +322,7 @@ def ciclo():
         imprimeMatrizAdj(grafo)
         main()
 
-def roda():  ###################### aguardando resposta do monitor 
+def roda():
     
     tamanho = int(input("digite o tamanho do grafo(n >= 3): ")) + 1
 
@@ -345,7 +345,7 @@ def roda():  ###################### aguardando resposta do monitor
     grafo[0][tamanho - 2] = '1'
     grafo[tamanho - 2][0] = '1'
 
-    nomeGrafo = "roda_" + str(tamanho - 1) ########## aguardando resposta do monitor 
+    nomeGrafo = "roda_" + str(tamanho - 1) 
     print("\nMatriz de Adjacencia do grafo " + nomeGrafo + ":\n")
 
     try:
@@ -399,9 +399,94 @@ def n_cubo():
       imprimeMatrizAdj(grafo)
       main()
 
+def componentesGrafo():
+
+  cArestas = set()
+  lConjuntosVertices = []
+
+  try:
+        
+        grafosArmazenados = abreArquivo()
+
+        print("\n\nGrafos disponiveis: ")
+
+        for grafo in grafosArmazenados:
+            print(grafo)
+
+        grafo = input("\nQue grafo deseja verificar se e conexo? ")
+
+        if grafo in grafosArmazenados:
+          print("\n\nMatriz de Adjacencia do grafo " + grafo + ':\n')
+          imprimeMatrizAdj(grafosArmazenados[grafo])
+
+          grafo = grafosArmazenados[grafo] 
+          for i in range(len(grafo)):
+            grafo[i][i] = "W"
+
+          print("\nOs vertices estao rotulados de 1 a n.\n")
+
+          for i in range(len(grafo)):
+            lConjuntosVertices.append(set(str(i + 1))) 
+            for j in range(i + 1, len(grafo)):
+              if grafo[i][j] in ['1', 1]:
+                print(str(i + 1) + " eh adjacente a " + str(j + 1))
+                grafo[i][j] = "G"
+                grafo[j][j] = "G"
+                cArestas.add(str(i + 1) + str(j + 1))
+                lConjuntosVertices[-1].add(str(j + 1))
+
+            if len(lConjuntosVertices) > 1:
+              for x in range(len(lConjuntosVertices) - 1):
+                if lConjuntosVertices[-1].issubset(lConjuntosVertices[x]) and lConjuntosVertices[-1] != lConjuntosVertices[x]:
+                  lConjuntosVertices.pop(-1)
+                  lConjuntosVertices = lConjuntosVertices
+                  break
+            if "G" in grafo[i]:
+              grafo[i][i] = "B"
+
+          cont = []
+          for i in range(len(lConjuntosVertices)):
+            for j in range(i, len(lConjuntosVertices)):
+              if lConjuntosVertices[i] & lConjuntosVertices[j]:
+                if len(cont) > 0 and cont[-1] & (lConjuntosVertices[i] | lConjuntosVertices[j]):
+                  cont[-1] = (cont[-1] | (lConjuntosVertices[i] | lConjuntosVertices[j]))
+                else:
+                  cont.append((lConjuntosVertices[i] | lConjuntosVertices[j]))
+              elif not (lConjuntosVertices[i] & cont[-1]):
+                cont.append(lConjuntosVertices[i])
+          
+          if len(cont) == 1:
+            print("\nO grafo eh conexo. Ou seja, possui apenas 1 componente conexa\n")
+          
+          else:
+            print("\nO grafo nao eh conexo.")
+            print(f"\ntotal de componentes conexas: {len(cont)}\n")
+          
+          print(f"Conjunto de componentes conexas {cont}") 
+
+          if cArestas:
+            print(f"\nConjunto de arestas do grafo: {cArestas}\n")
+
+          else:
+            print("O grafo não possui arestas\n")
+
+          for w in grafo:
+            if "W" in w:
+              print(f"{str((w.index('W') + 1))} nao possui arestas com os outros vertices do grafo.\n") 
+
+          main()
+
+        else:
+          print("\nNao existe um grafo armazenado com este nome. Tente novamente.")
+          componentesGrafo()
+
+  except:
+      print("\nAinda nao existe nenhum grafo armazenado.\nEscolha b para ler um.\n")
+
+
 def main():
 
-    escolha = input("Escolha uma das opcoes:\na - Ler um grafo\nb - Carregar um grafo\nc - Produzir um grafo de uma classe especial\nd - Sair\n")
+    escolha = input("Escolha uma das opcoes:\na - Ler um grafo\nb - Carregar um grafo\nc - Produzir um grafo de uma classe especial\nd - Verificar se um grafo e conexo\ne - Sair\n")
 
     if escolha == 'a':
         leGrafo()
@@ -413,7 +498,10 @@ def main():
         leGrafoEspecial()
 
     elif escolha == 'd':
-        sys.exit()             
+        componentesGrafo()
+
+    elif escolha == 'e':
+        sys.exit()         
 
     else:
         print("\n'" + escolha + "' nao e uma opcao valida. Tente de novo.\n")
@@ -421,14 +509,3 @@ def main():
 
 main()
 
-#######################################################################################
-#######################################################################################
-
-# comparar o meu projeto do periodo passado com o do julio e ver qual dos dois está mais parecido 
-# com o algoritmo de busca em largura do luerbio ( o algoritmo está no material dele e em foto no celular ).
-# Condferir também se a saída está correta.
-
-# no video de conectividade 2023-04-21 17-54-11.mp4  em 8min talvez tem um negocio que ele fala sobre o trab
-
-#######################################################################################
-#######################################################################################
